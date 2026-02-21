@@ -4,14 +4,14 @@ import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Terminal } from "lucide-react";
 
-import ComputersCanvas from "../canvas/Computers";
+import GirlCanvas from "../canvas/Girl";
 
 const Hero = () => {
     return (
         <section id="home" className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-            {/* Background 3D Scene */}
-            <div className="absolute inset-0 z-0">
-                <ComputersCanvas />
+            {/* Background 3D Character Scene */}
+            <div className="absolute inset-0 z-0 opacity-80 lg:opacity-100">
+                <GirlCanvas />
             </div>
 
             <div className="container mx-auto px-6 relative z-10 pointer-events-none">

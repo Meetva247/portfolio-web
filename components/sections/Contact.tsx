@@ -19,16 +19,38 @@ const Contact = () => {
         setForm({ ...form, [name]: value });
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         setLoading(true);
 
-        // Simulation of EmailJS "call" logic from the video
-        setTimeout(() => {
+        try {
+            const formData = new FormData(event.currentTarget);
+            formData.append("access_key", "40f67cb2-7079-4708-93de-bc52a09935e1");
+
+            const object = Object.fromEntries(formData);
+            const json = JSON.stringify(object);
+
+            const res = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json"
+                },
+                body: json
+            }).then((res) => res.json());
+
+            if (res.success) {
+                alert("Thank you! I will get back to you as soon as possible.");
+                setForm({ name: "", email: "", message: "" });
+            } else {
+                throw new Error(res.message || "Something went wrong.");
+            }
+        } catch (error) {
+            console.error("Web3Forms Error:", error);
+            alert("Something went wrong. Please try again later.");
+        } finally {
             setLoading(false);
-            alert("Thank you! I will get back to you as soon as possible.");
-            setForm({ name: "", email: "", message: "" });
-        }, 2000);
+        }
     };
 
     return (
@@ -106,7 +128,6 @@ const Contact = () => {
                 </div>
             </div>
 
-            {/* AI Assistant Floating Button (UI Placeholder) */}
             <motion.div
                 drag
                 dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }}
